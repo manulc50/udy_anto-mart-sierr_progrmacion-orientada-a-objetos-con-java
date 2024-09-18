@@ -1,0 +1,697 @@
+<h4>Sobrecarga y sobrescritura de mtodos en Java</h4>
+
+<p>&nbsp;
+
+  </p>
+
+<p>Los conceptos de sobrecarga y sobrescritura son de vital importancia en programacin orientada a objetos, sin embargo, tienden a confundirse algunas veces y a interpretarse de manera incorrecta. Por este motivo, es importante definirlos bien y establecer sus reglas y diferencias.
+
+  </p>
+
+<p>Abordaremos primero el concepto de sobrecarga, aplicado tanto a mtodos como a constructores, y dejaremos para despus la sobrescritura de mtodos.
+
+  </p>
+
+<h4>Sobrecarga de mtodos y constructores</h4>
+
+<h4>Sobrecarga de mtodos</h4>
+
+<p>La sobrecarga de mtodos consiste en definir, dentro de una misma clase, mtodos que tengan el mismo nombre. El motivo de esto es muy claro, si queremos tener varios mtodos que hagan una misma tarea, pero trabajando de forma diferente, mejor llamarlos igual que de forma diferente, pues esto creara confusin y sera ms difcil de recordar para el programador 
+
+  </p>
+
+<p>De cara a aplicar la sobrecarga de mtodos, debemos tener presentes un par de reglas a seguir:
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Los mtodos sobrecargados deben diferenciarse en el tipo o cantidad de parmetros. Es decir, dos mtodos pueden llamarse igual, pero su lista de parmetros debe ser diferente. Por ejemplo, los siguientes mtodos seran un ejemplo vlido de sobrecarga:
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void test()
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void test(int n)
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void test(long k)
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void test(int p, String m)
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Los cuatro mtodos anteriores podran estar definidos en la misma clase porque, a pesar de tener el mismo nombre, se diferencian en los parmetros.
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Ahora bien, si incluimos este quinto mtodo en la misma clase que los anteriores se producira un error de compilacin, ya que su definicin es la misma que la del segundo mtodo:
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void test(int y)
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; No importa cmo se hayan llamado a los parmetros, sino el tipo de los mismos.
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; La diferencia en la lista de parmetros es lo que permite al compilador identificar el mtodo que est siendo llamado en cada caso. Si quisiramos llamar al segundo de los mtodos <em>test</em> sera:
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; objeto.test(4);
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pero si escribimos 
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; objeto.test(2L);
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Entonces el compilador entiende que se est llamando al tercero de los mtodos
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; La otra regla a tener en cuenta es referente a los tipos de devolucin, y bsicamente consiste en que no hay ninguna restriccin en este aspecto. Es decir, <strong>el tipo de devolucin no influye</strong> en la sobrecarga de un mtodo. Dos mtodos sobrecargados pueden tener el mismo tipo de devolucin (es lo habitual) o ser diferente. Por ejemplo, esto es un caso vlido de sobrecarga:
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int imprimir()
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void imprimir(String s)
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Sin embargo, los siguientes mtodos no pueden estar definidos en la misma clase, no es un caso vlido de sobrecarga, pues el hecho de que tengan diferente tipo de devolucin no afecta a la sobrecarga, solo los parmetros los que se tienen en cuenta. En este caso, el compilador interpreta una duplicidad de mtodos:
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void cambiar()
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int cambiar()
+
+  </p>
+
+<h4>Sobrecarga y herencia</h4>
+
+<p>Los mtodos sobrecargados no siempre tienen que estar definidos en la misma clase, puede ser que una clase sobrecargue un mtodo que ha heredado de su superclase:
+
+  </p>
+
+<p>class ClaseA{
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; public void imprimir(){
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; }
+
+  </p>
+
+<p>}
+
+  </p>
+
+<p>class ClaseB extends ClaseA{
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; //sobrecarga del mtodo imprimir
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; public void imprimir(int k){
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; }
+
+  </p>
+
+<p>}
+
+  </p>
+
+<p>En el ejemplo anterior, la ClaseB cuenta con los mtodos imprimir() e imprimir(int k)
+
+  </p>
+
+<h4>Mtodos con nmero variable de argumentos</h4>
+
+<p>En Java es posible definir mtodos con un nmero variable de argumentos:
+
+  </p>
+
+<p>void test(String s, int ... k)
+
+  </p>
+
+<p>En este ejemplo, hemos definido un mtodo que recibe un texto y un nmero variable de enteros, es decir, se le puede llamar con un String y ningn entero, como un String y un entero, con un String y dos enteros, etc.
+
+  </p>
+
+<p>Teniendo esto en cuenta, la pregunta que nos haramos sera si&nbsp; es posible sobrecargar el mtodo test de la siguiente manera:
+
+  </p>
+
+<p>void test(String s, int ...k)
+
+  </p>
+
+<p>void test(String s)
+
+  </p>
+
+<p>La respuesta es que s, lo anterior es correcto. Si desde otra parte del programa se escribe la instruccin:
+
+  </p>
+
+<p>objeto.test("hola");
+
+  </p>
+
+<p>Se estar llamando a la segunda versin del mtodo. Es decir, aunque esa llamada pudiera encajar en ambos mtodos, <strong>Java utiliza la definicin de mtodo que ms se ajuste a la llamada</strong>, en este caso, al mtodo que recibe un nico String.
+
+  </p>
+
+<p>Dentro del mtodo, los parmetros con nmero variable de datos son tratados como un array, por tanto, ojo con este intento de sobrecara, porque no sera correcto y provoca un error de compilacin:
+
+  </p>
+
+<p>void test(String s, int[] t)
+
+  </p>
+
+<p>void test(String s, int ...w){
+
+  </p>
+
+<h4>Sobrecarga de constructores</h4>
+
+<p>Los constructores tambin se pueden sobrecargar, de forma que ofrezcamos al programador diferentes formas de inicializar un objeto de una clase. Las reglas a seguir son exactamente las mismas que para los mtodos, aunque en&nbsp; el caso de los constructores no hay nada que decir sobre los tipos de devolucin porque no los tienen.
+
+  </p>
+
+<p>Aqu tenemos un ejemplo de sobrecarga de constructores en la clase Miclase:
+
+  </p>
+
+<p>public Miclase()
+
+  </p>
+
+<p>public Miclase(int p)
+
+  </p>
+
+<p>public Miclase(int n, int s)
+
+  </p>
+
+<p>&nbsp;
+
+  </p>
+
+<h4>Sobrecarga en clases de Java estndar</h4>
+
+<p>La sobrecarga de mtodos y constructores es algo tremendamente comn en las clases de Java estndar. Simplemente, por mencionar algunos casos de clases conocidas, tenemos el mtodo valueOf() en la clase String que est sobrecargado nueve veces, los constructores de la propia clase String, los mtodos max y min de la clase Math y un largo etctera de casos.
+
+  </p>
+
+<h4>Sobrescritura de mtodos</h4>
+
+<p>La sobrescritura de mtodos es un concepto que est ntimamente asociado a la herencia. Sobrescribir un mtodo es volver a definir en una clase un mtodo que ha sido heredado de la superclase, quedando sustituido el mtodo antiguo por el nuevo.
+
+  </p>
+
+<p>Para analizar la sobrescritura, vamos a suponer que tenemos una clase llamada Punto que encapsula los datos un punto en el plano y dispone tambin de un mtodo, <em>imprimir()</em>, que muestra por pantalla las coordenadas actuales del punto:
+
+  </p>
+
+<p>public class Punto{
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; int x,y;
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; public Punto(int x, int y){
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.x=x;
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.y=y;
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; }
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; //mtodos setter/getter
+
+  </p>
+
+<p>&nbsp;&nbsp; :
+
+  </p>
+
+<p>&nbsp; public void imprimir(){
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp; System.out.println("Coordenadas: "+x+","+y);
+
+  </p>
+
+<p>&nbsp; }
+
+  </p>
+
+<p>}
+
+  </p>
+
+<p>Ahora, supongamos que ms adelante deseamos trabajar con puntos en el espacio, es decir, que tengan tres coordenadas x, y, z. En lugar de crear la clase desde cero, aplicaremos la herencia para crearla como subclase de Punto:
+
+  </p>
+
+<p>public class Punto3D extends Punto{
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; int z;
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; public Punto3D(int x, int y, int z){
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; super(x,y);
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.z=z;
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; }
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; public void setZ(int z){
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.z=z;
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; }
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; public int getZ(){
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return z;
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; }
+
+  </p>
+
+<p>}
+
+  </p>
+
+<p>Esta nueva clase, hereda los mtodos <em>setX</em>, <em>getX</em>, <em>setY</em> y <em>getY</em> de Punto, adems del mtodo imprimir(). El problema aqu est en que el mtodo imprimir() que hemos heredado solo muestra las coordenadas x e y, y a nosotros nos gustara tener en Punto3D un imprimir() que muestre las tres coordenadas del punto en el espacio.
+
+  </p>
+
+<p>Como el mtodo heredado no es adecuado para la nueva clase, debemos <strong>sobrescribirlo</strong>. Es decir, debemos volver a crearlo en la nueva clase, pero respetando el formato del mtodo original, a fin de que el heredado quede anulado en la nueva clase y solo dispongamos de la nueva versin. La sobrescritura del mtodo <em>imprimir</em> en Punto3D quedara:
+
+  </p>
+
+<p>public void imprimir(){
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; System.out.println("Coordenadas: "+getX()+","+getY()+","+z);
+
+  </p>
+
+<p>}
+
+  </p>
+
+<p>Observa cmo, al no poder acceder desde la subclase a los atributos privados de la superclase, recurrimos a los mtodos heredados <em>getX</em> y <em>getY</em>.
+
+  </p>
+
+<p>Recalcar tambin el hecho de haber respetado completamente el formato original del mtodo. Si hubiramos aadido un parmetro en el nuevo mtodo, no estaramos hablando de sobrescritura, <strong>sino de sobrecarga</strong>, pues tendramos el heredado y el nuevo. Si hubiramos cambiado el tipo de devolucin:
+
+  </p>
+
+<p>public int imprimir()
+
+  </p>
+
+<p>obtendramos un error de compilacin, pues sera como intentar tener dos mtodos idnticos, solo diferenciados en el tipo de devolucin, y eso como vimos anteriormente no es posible.
+
+  </p>
+
+<p>Slo si respetamos completamente el formato del mtodo original conseguimos anular ste y que en la nueva clase exista nada ms que la nueva versin del mtodo sobrescrito.
+
+  </p>
+
+<h4>Reglas</h4>
+
+<p>Podemos agrupar las reglas para la sobrescritura de mtodos en los siguientes puntos.
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; El nombre y lista de parmetros del nuevo mtodo debe ser idntica a la del mtodo que se va a sobrescribir.
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; El tipo de devolucin del nuevo mtodo debe ser igual o un subtipo del original. Por ejemplo, si en la superclase tenemos definido este mtodo
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public Object prueba()
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; En la subclase podemos sobrescribir ese mtodo de la siguiente forma:
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public String prueba()
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Es correcto pues String es subclase de Object
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; El mbito del nuevo mtodo debe ser igual o menos restrictivo que el del original. Si en la superclase tenemos este mtodo con mbito de paquete (que es el mbito cuando no se indica modificador):
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void metodo()
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; En la subclase podemos sobrescribirlo de la siguiente forma:
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public void metodo()
+
+  </p>
+
+<h4>La anotacin @Override</h4>
+
+<p>Si tenemos el siguiente mtodo en una clase:
+
+  </p>
+
+<p>public void imprimir()
+
+  </p>
+
+<p>Y cuando vamos a sobrescribirlo en la subclase lo definimos de la siguiente forma:
+
+  </p>
+
+<p>public void Imprimir() //la primera letra se ha escrito en mayscula
+
+  </p>
+
+<p>Nadie nos va a avisar de que estamos cometiendo un error, porque sintcticamente no hemos hecho nada incorrecto. Lo que pasa es que, en lugar de haber sobrescrito el mtodo imprimir(), ahora tenemos dos mtodos, el heredado imprimir() y el nuevo Imprimir()
+
+  </p>
+
+<p>Para evitar que sucedan estas cosas, conviene que a la hora de sobrescribir un mtodo definamos este con la anotacin @Override. De esta forma, le informamos al compilador que estamos sobrescribiendo un mtodo y <strong>si no lo hacemos correctamente nos dar un error de compilacin</strong>. Segn esto, si en la subclase hubiramos definido el mtodo <em>Imprimir()</em> de esta manera, el compilador nos habra lanzado un error: 
+
+  </p>
+
+<p>@Override
+
+  </p>
+
+<p>public void Imprimir()
+
+  </p>
+
+<p>&nbsp;
+
+  </p>
+
+<h4>Llamada a mtodo original desde subclase</h4>
+
+<p>Cuando sobrescribimos un mtodo en una subclase, puede ser que en algn punto del cdigo de dicha clase necesitemos hacer una llamada a la versin original del mtodo definida en la superclase. Para ello, no podramos utilizar el nombre del mtodo tal cual: nombreMetodo(), porque entonces se estara llamando al nuevo mtodo. Debemos utilizar la expresin super.nombreMetodo().
+
+  </p>
+
+<p>Para ver como se aplica esto, volvamos al ejemplo de la clase Punto3D. Dado que el nuevo mtodo imprimir() hace lo mismo que el original, pero aadiendo la impresin de una nueva coordenada, en lugar de repetir las mismas instrucciones del original, llamaremos a este y luego aadiremos las instrucciones propias de la nueva versin:
+
+  </p>
+
+<p>public class Puntod extends Punto{
+
+  </p>
+
+<p>public void imprimir(){
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; <strong>super.imprimir(); //ejecucin instrucciones originales</strong>
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; System.out.println(z); //nueva instruccin
+
+  </p>
+
+<p>}
+
+  </p>
+
+<p>:
+
+  </p>
+
+<p>&nbsp;
+
+  </p>
+
+<p>}
+
+  </p>
+
+<p>&nbsp;
+
+  </p>
+
+<h4>Mtodos finales</h4>
+
+<p>Un mtodo final es aquel que no puede ser sobrescrito. Se definen con la palabra <em>final</em>:
+
+  </p>
+
+<p>public class Test{
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; <strong>public final void prueba()</strong>{
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; }
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; :
+
+  </p>
+
+<p>}
+
+  </p>
+
+<p>Si en una subclase de Test se intentara sobrescribir prueba se producira un error de compilacin:
+
+  </p>
+
+<p>public class Nueva extends Test{
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; //error de compilacin
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; public void prueba(){
+
+  </p>
+
+<p>&nbsp;
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; }
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; //esto es correcto, aqu sera una sobrecarga
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; public void prueba(int k){
+
+  </p>
+
+<p>&nbsp;
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; } 
+
+  </p>
+
+<p>}
+
+  </p>
+
+<h4>Modificador protected</h4>
+
+<p>Cuando estudiamos los modificadores de acceso a un mtodo vimos que haba tres posibilidades: <em>private</em>, (default) y <em>public</em>. En el caso de mtodos tenemos un cuarto modificador llamado <em>protected</em>.
+
+  </p>
+
+<p>El mbito de <em>protected</em> est entre <em>default</em> y <em>public</em>. Un mtodo definido como <em>protected</em> puede ser utilizado desde cualquier clase de su mismo paquete, y tambin <strong>desde subclases de otros paquetes</strong>.
+
+  </p>
+
+<p>El acceso desde las subclases de otros paquetes <strong>se puede realizar dentro del contexto de la herencia, no a travs de la creacin directa de objetos</strong>:
+
+  </p>
+
+<p>package p1;
+
+  </p>
+
+<p>public class ClaseA{
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; protected void imprimir(){...}
+
+  </p>
+
+<p>}
+
+  </p>
+
+<p>package p2;
+
+  </p>
+
+<p>public class ClaseB extends ClaseA{
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; @Override
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; public void imprimir(){ //correcto
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; super.imprimir();//correcto
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; }
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; public void test(){
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ClaseA ca=new ClaseA();
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ca.imprimir(); <strong>//error de compilacin</strong>
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; }
+
+  </p>
+
+<p>}
+
+  </p>
+
+<p>&nbsp;
+
+  </p>
+
+<p>&nbsp;
+
+  </p>
+
+<p>&nbsp;
+
+  </p>
+
+<p>&nbsp;
+
+  </p>
+
+<p>&nbsp;
+
+  </p>

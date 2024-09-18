@@ -1,0 +1,270 @@
+<h4>Fechas en Java</h4>
+
+<p>En Java existen varias clases para trabajar con fechas y horas. Por un lado, tenemos las clases de fechas tradicionales Date y Calendar, por otro la clase DateFormat que se encarga de aplicar formato a los objetos de fecha anteriores, adems, estn las clases especficas para trabajar con fechas en aplicaciones de bases de datos y, finalmente, las nuevas clases para tratamiento de fechas y horas incorporadas en la versin Java 8.
+
+  </p>
+
+<p>A lo largo de esta leccin te explicar como manejar fechas con las clases tradicionales del paquete java.util y como dar formato a estas de cara a su presentacin en una aplicacin. Tambin estudiaremos las clases de fecha para bases de datos y como convertir entre estas y las tradicionales.
+
+  </p>
+
+<p>En un documento aparte que podrs descargarte en la zona de material adicional de esta leccin, te explicar como utilizar las nuevas clases de fecha introducidas en Java 8.
+
+  </p>
+
+<h4>La clase java.util.Date</h4>
+
+<p>Esta clase representa el tipo fecha/hora clsico en Java. La mayora de sus constructores estn <em>deprecated</em> u obsoletos, lo que significa que no deberamos utilizarlos. 
+
+  </p>
+
+<p>Los dos nicos constructores que an se pueden utilizar para crear un objeto fecha/hora con esta clase son:
+
+  </p>
+
+<ul><li>Date(). Crea un objeto Date que representa la fecha y hora actuales.
+
+  </li><li>Date(long milis). Crea un objeto Date que representa la fecha y hora asociada al tiempo absoluto que se le proporciona como parmetro. El tiempo absoluto se mide como la cantidad de milisegundos transcurridos desde las 0 horas del 1 de enero de 1970. Esta medida de tiempo absoluto es muy til de cara a comparar unas fechas con otras 
+
+  </li></ul>
+
+<p>No solo casi todos sus constructores estn obsoletos, tambin la mayora de sus mtodos. Entre los pocos mtodos no obsoletos destacamos:
+
+  </p><ul><li>int getTime(). Devuelve el tiempo absoluto asociado al objeto Date.
+
+  </li><li>void setTime(long milis). Establece un nuevo valor de 
+fecha/hora para el objeto, a partir del tiempo absoluto proporcionado 
+como parmetro.
+
+  </li></ul><p><br></p>
+
+<p>Si la mayora de sus mtodos y constructores estn obsoletos, porqu se sigue utilizando esta clase?. La respuesta es que Date es el tipo de dato fecha/hora de Java y la gran mayora de los mtodos de clases que trabajan con datos de tipo fecha/hora utilizan Date. Adems, como veremos ms adelante en esta leccin, la clase DateFormat, que se encarga de formatear datos de tipo fecha, lo hace sobre objetos de tipo Date
+
+  </p>
+
+<h4>La clase java.util.Calendar</h4>
+
+<p>Esta clase es posterior a Date, fue incorporada a Java estndar a partir de la versin JDK 1.1. Proporciona mtodos para trabajar con los componentes de una fecha/hora (das, meses, aos, horas,..).
+
+  </p>
+
+<p>En primer lugar, dado que Calendar es una clase abstracta, no podemos utilizar su constructor para crear un objeto de este tipo, debemos recurrir al mtodo esttico getInstance(), que devuelve un objeto Calendar asociado a la fecha y hora actuales:
+
+  </p>
+
+<p>Calendar c= Calendar.getInstance();
+
+  </p>
+
+<p>Una vez que disponemos de un objeto Calendar, podemos obtener los diferentes componentes que lo forman a partir de su mtodo <em>get().</em> Este mtodo recibe como parmetro un entero que representa el componente fecha/hora que queremos obtener, pero en lugar de tener que recordar que nmero corresponde a cada componente, podemos utilizar las constantes de la propia clase Calendar, entre las que destacamos:
+
+  </p><ul><li>YEAR. Constante que representa el ao
+
+  </li><li>MONTH. Constante que representa el mes. Los meses se obtienen como un entero entre 0 y 11
+
+  </li><li>DAY_OF_MONTH. Constante que representa el da del mes
+
+  </li><li>HOUR. Constante que representa la hora en formato 0 a 23
+
+  </li><li>MINUTE. Constante que representa los minutos
+
+  </li><li>SECOND. Constante que representa los segundos.
+
+  </li></ul><p><br></p>
+
+<p>Por ejemplo, si quisiramos mostrar por pantalla la fecha y hora actuales en formato: dia/mes/ao&nbsp; hora:minutos:segundos, el cdigo sera:
+
+  </p>
+
+<p>Calendar c= Calendar.getInstance();
+
+  </p>
+
+<p>String fecha="";
+
+  </p>
+
+<p>//construye una cadena con los datos de la fecha
+
+  </p>
+
+<p>fecha+=c.get(Calendar.DAY_OF_MONTH)+"/";
+
+  </p>
+
+<p>fecha+=(c.get(Calendar.MONTH)+1)+"/";
+
+  </p>
+
+<p>fecha+=c.get(Calendar.YEAR)+"&nbsp; ";
+
+  </p>
+
+<p>fecha+=c.get(Calendar.HOUR)+":";
+
+  </p>
+
+<p>fecha+=c.get(Calendar.MINUTE)+":";
+
+  </p>
+
+<p>fecha+=c.get(Calendar.SECOND);
+
+  </p>
+
+<p>//imprime la fecha
+
+  </p>
+
+<p>System.out.println("La fecha y hora es: "+fecha);
+
+  </p>
+
+<p>Un objeto Calendar tambin permite modificar la fecha y hora almacenada a travs de sus mtodos set:
+
+  </p><ul><li>set(int year, int month, int date)
+
+  </li><li>set(int year, int month, int date, int hourOfDay, int minute, int second)
+
+  </li></ul><p><br>Si quisiramos modificar la fecha y hora del objeto Calendar creado anteriormente, fijndolo en el 3 de marzo de 2016 a las 15:30 horas sera:
+
+  </p><p><br></p>
+
+
+
+<p>c.set(2016,2,3,15,30,0);
+
+  </p>
+
+<p>Por otro lado, si dado un objeto Calendar queremos convertirlo a Date, debemos recurrir al mtodo <em>getTime()</em>:
+
+  </p>
+
+<p>Date dt=c.getTime();
+
+  </p>
+
+<h4>Formateado de fechas con java.text.DateFormat</h4>
+
+<p>Si queremos presentar un fecha en un determinado formato, incluso basado en una determinada localizacin, la forma ms sencilla y flexible de hacerlo es a travs de la clase DateFormat que se encuentra en el paquete java.text.
+
+  </p>
+
+<p>Dado que se trata de una clase abstracta, tendremos que crear una implementacin de esta clase a partir de alguno de los siguientes mtodos estticos de DateFormat:
+
+  </p><ul><li>DateFormat getDateInstance(int style, Locale aLocale). Devuelve una 
+implementacin de DateFormat utilizando el estilo indicado en el primer 
+parmetro y segn la localizacin proporcionada como segundo parmetro. 
+El estilo se indicar a travs de alguna de las constantes de 
+DateFormat:
+
+  </li></ul><p>&nbsp; &nbsp; &nbsp; SHORT. Estilo en formato corto
+
+  </p>
+
+<p>&nbsp; &nbsp; &nbsp; MEDIUM. Estilo en formato medio
+
+  </p>
+
+
+
+<p>&nbsp; &nbsp; &nbsp; LONG. Estilo en formato largo
+
+  </p>
+
+
+
+<p>&nbsp; &nbsp; FULL. Estilo en formato completo
+
+  </p><li><a href="http://docs.oracle.com/javase/8/docs/api/java/text/DateFormat.html#getDateTimeInstance-int-int-java.util.Locale-" rel="nofollow">DateFormat getDateTimeInstance</a>(int&nbsp;dateStyle, int&nbsp;timeStyle, <a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html" rel="nofollow" title="class in java.util">Locale</a>&nbsp;aLocale).
+ Es igual que el anterior, aunque como segundo parmetro podemos indicar
+ el estilo utilizado para la hora. Los posibles valores son las mismas 
+constantes indicadas anteriormente
+
+  </li><br><p>En cuanto a&nbsp; la localizacin, define la forma de presentacin de la fecha/hora de una determinada regin geogrfica. Quedar definida a travs de un objeto Locale, esta clase Locale dispone de algunas constantes con localizaciones predefinidas, como por ejemplo la constante Locale.US que se utilizara para un estilo de presentacin utilizado en Estados Unidos. Podemos crear una localizacin asociada a una determinada regin utilizando el constructor Locale(String language), o Locale(String language, String country). Los cdigos de idioma y pas estn definidos por la norma ISO 639
+
+  </p>
+
+<p>Por ejemplo, si queremos crear un DateFormat para aplicar un formato de fecha largo, segn el estilo utilizado en Espaa, sera:
+
+  </p>
+
+<p>DateFormat df;
+
+  </p>
+
+<p>df=DateFormat.getDateInstance(DateFormat.LONG, new Locale("es","ES"));
+
+  </p>
+
+<p>Una vez creado el objeto DateFormat, para aplicar el formato definido por el mismo sobre una determinada fecha utilizaramos el mtodo <em>format(Date f)</em>. Como vemos, este mtodo recibe como parmetro el objeto fecha a formatear en forma de objeto Date, devolviendo una cadena de caracteres con la fecha formateada segn las reglas de creacin del objeto DateFormat.
+
+  </p>
+
+<p>Por ejemplo, si queremos formatear la fecha actual segn los estilos definidos en el objeto DateFormat creado anteriormente sera:
+
+  </p>
+
+<p>Date fecha=new Date();
+
+  </p>
+
+<p>System.out.println(df.format(fecha));
+
+  </p>
+
+<p>En pantalla se mostrara lo siguiente:
+
+  </p>
+
+<p><em>13 de agosto de 2017</em>
+
+  </p>
+
+<h4>Fechas en SQL</h4>
+
+<p>Cuando vamos a trabajar con bases de datos a travs de JDBC, los campos de fecha se manejan a travs de los tipos Date y Timestamp del paquete java.sql. Ambas son subclases de java.util.Date
+
+  </p>
+
+
+
+<p>&nbsp;
+
+  </p>
+
+<p>Mientras que java.sql.Date es utilizada solo para fechas, Timestamp se emplea para columnas de tipo fecha y hora.
+
+  </p>
+
+<p>En aplicaciones donde tenemos una clara separacin entre capa de lgica de negocio y capa de presentacin, es habitual tener que convertir fechas/horas de tipo util.Date a los tipos SQL y viceversa. Vamos a ver como realizar esta tarea.
+
+  </p>
+
+<p>Conversin sql.Date y sql.Timestamp a util.Date
+
+  </p>
+
+<p>Dado que ambas son subclases de util.Date, convertir uno de estos objetos sql a un objeto util.Date es tan simple como realizar una operacin de asignacin. Por ejemplo, si <em>sqFecha</em> es una variable que contiene un objeto java.sql.Date con el valor de una columna de fecha, su conversin a un objeto util.Date ser:
+
+  </p>
+
+<p>java.util.Date utFecha=sqFecha;
+
+  </p>
+
+<p>Conversin de un objeto utilDate a sql.Date y sql.Timestamp
+
+  </p>
+
+<p>Para realizar la conversin en sentido contrario, tendremos que recurrir a los constructores sql.Date(long time) y sql.Timestamp(long time), que permiten crear objetos sql de fecha a partir del tiempo absoluto. 
+
+  </p>
+
+<p>Como podemos obtener fcilmente el tiempo absoluto asociado a un objeto java.util.Date a partir de su mtodo <em>getTime()</em>, la solucin al problema resulta inmediata. Por ejemplo, <em>fechaDato</em> es una variable java.util.Date que contiene la fecha de un dato en esta formato, para convertirla a un tipo sql.Timestamp procederamos:
+
+  </p>
+
+<p>java.sql.Timestamp fechaFin=new java.sql.Timestamp(fechaDato.getTime());
+
+  </p>

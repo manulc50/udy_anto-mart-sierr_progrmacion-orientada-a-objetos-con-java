@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      ul,
+      ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      code {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .quiz-content {
+        padding: 2.4rem;
+        word-break: break-word;
+        max-width: 86rem;
+        margin: 0 auto;
+      }
+      .quiz-container {
+        margin: 0 auto;
+        max-width: 84rem;
+        padding: 0;
+      }
+      .question {
+        margin-bottom: 5rem;
+      }
+      .question span {
+        font-size: 24px;
+        font-weight: 700;
+      }
+      .question-prompt {
+        margin-top: 0.8rem;
+        font-weight: 700;
+      }
+      .question-answer {
+        margin-top: 1.6rem;
+        padding-left: 0;
+        box-sizing: border-box;
+      }
+      .question-answer label {
+        max-width: 80rem;
+        position: relative;
+        cursor: pointer;
+        display: flex;
+        min-width: 18rem;
+        border: solid #1c1d1f 2px;
+      }
+      .question-answer div {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem;
+        width: 100%;
+      }
+      .question-answer div:hover {
+        background-color: #f5f5f5;
+      }
+      .question-answer input {
+        display: none;
+      }
+      .question-answer span {
+        width: 1rem;
+        height: 1rem;
+        margin-right: 1.6rem;
+        top: 0;
+        border-radius: 50%;
+        display: inline-block;
+        flex-shrink: 0;
+        border: 0.2rem solid #1c1d1f;
+        position: relative;
+      }
+      .selected {
+        background: #1c1d1f;
+        box-shadow: 0 0 0 0.4rem #fff inset;
+      }
+      .score {
+              position: fixed;
+            }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <div id="score" class="score">
+      <span>Score: N/A of N/A</span>
+    </div>
+    <div id="quiz-container" class="quiz-content"></div>
+
+    <script>
+      const quizData = {"pass_percent": 70, "questions": [{"_class": "assessment", "id": 1653976, "assessment_type": "multiple-choice", "prompt": {"answers": ["<p>10</p>", "3", "<p>20</p>", "<p>Se producir\u00e1 una excepci\u00f3n</p>"], "question": "<p>Dado el siguiente c\u00f3digo:\n\n  </p>\n\n<p>ArrayList&lt;Integer&gt; lista=new ArrayList&lt;&gt;();\n\n  </p>\n\n<p>lista.add(8);lista.add(10);lista.add(3);lista.set(1,20);\n\n  </p>\n\n<p>lista.remove(1);\n\n  </p>\n\n<p>System.out.println(lista.get(1));\n\n  </p>\n\n<p>\u00bfQu\u00e9 se imprimir\u00e1 por pantalla?\n\n  </p>", "feedbacks": ["El n\u00famero 10 ya ha sido sustituido por el 20", "El n\u00famero 3 es desplazado a la posici\u00f3n 1 tras eliminar el 20", "El n\u00famero 20 ha sido eliminado", "El c\u00f3digo se ejecuta sin problemas"], "relatedLectureIds": ["7835540"]}, "correct_response": ["b"], "section": "", "question_plain": "Dado el siguiente c\u00f3digo:\n\n  \n\nArrayList&lt;Integer&gt; lista=new ArrayList&lt;&gt;();\n\n  \n\nlista.add(8);lista.add(10);lista.add(3);lista.set(1,20);\n\n  \n\nlista.remove(1);\n\n  \n\nSystem.out.println(lista.get(1));\n\n  \n\n\u00bfQu\u00e9 se imprimir\u00e1 por pantalla?", "related_lectures": [{"_class": "lecture", "id": 7835540, "title": "Colecciones I", "created": "2017-08-26T15:29:45Z", "is_published": true, "asset": {"_class": "asset", "id": 12322274, "asset_type": "Video", "title": "video8_colecciones_1_audio_mejorado.mp4", "created": "2018-05-01T06:31:12Z"}, "object_index": 9, "url": "/course/programacion-orientada-a-objetos-con-java-b/learn/lecture/7835540"}]}, {"_class": "assessment", "id": 1656368, "assessment_type": "multiple-choice", "prompt": {"feedbacks": ["El objeto ha sido modificado", "Se ha a\u00f1adido un nuevo texto sobre el objeto, no sustituido su contenido", "Las dos variables act\u00faan sobre el mismo objeto y el objeto es mutable", ""], "question": "<p>Dado el siguiente c\u00f3digo:\n\n  </p>\n\n<p>StringBuilder sb1=new StringBuilder(\"lunes\");\n\n  </p>\n\n<p>StringBuilder sb2=sb1;\n\n  </p>\n\n<p>sb2.append(\"martes\");\n\n  </p>\n\n<p>System.out.println(sb1);\n\n  </p>\n\n<p>\u00bfQu\u00e9 se imprimir\u00e1 por pantalla?\n\n  </p>", "answers": ["<p>lunes</p>", "<p>martes</p>", "<p>lunesmartes</p>", "<p>no mostrar\u00e1 nada</p>"], "relatedLectureIds": ""}, "correct_response": ["c"], "section": "", "question_plain": "Dado el siguiente c\u00f3digo:\n\n  \n\nStringBuilder sb1=new StringBuilder(\"lunes\");\n\n  \n\nStringBuilder sb2=sb1;\n\n  \n\nsb2.append(\"martes\");\n\n  \n\nSystem.out.println(sb1);\n\n  \n\n\u00bfQu\u00e9 se imprimir\u00e1 por pantalla?", "related_lectures": []}, {"_class": "assessment", "id": 1656798, "assessment_type": "multiple-choice", "prompt": {"answers": ["<p>public int tester(int k){return 10;}</p>", "<p>void tester(){}</p>", "<p>private void tester(int m){}</p>", "<p>public tester(){}</p>"], "relatedLectureIds": "", "question": "<p>Dada la siguiente clase:\n\n  </p>\n\n<p>public class Prueba{\n\n  </p>\n\n<p>\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 public void tester(int n){}\n\n  </p>\n\n<p>\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 //linea 1\n\n  </p>\n\n<p>}\n\n  </p>\n\n<p>Indica cual de los siguientes m\u00e9todos puede ser incluido en linea 1 para que la clase pueda compilar correctamente\u00a0</p>", "feedbacks": ["Tiene mismo nombre y par\u00e1metros, aunque cambie el tipo de devoluci\u00f3n, no es un caso v\u00e1lido de sobrecarga", "Es un caso v\u00e1lido de sobrecarga, pues var\u00eda los par\u00e1metros del m\u00e9todo", "Igual que el primera caso, no puede haber dos m\u00e9todos con mismo nombre y par\u00e1metros", "No tiene tipo de devoluci\u00f3n, no es por tanto una definici\u00f3n correcta de m\u00e9todo"]}, "correct_response": ["b"], "section": "", "question_plain": "Dada la siguiente clase:\n\n  \n\npublic class Prueba{\n\n  \n\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 public void tester(int n){}\n\n  \n\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 //linea 1\n\n  \n\n}\n\n  \n\nIndica cual de los siguientes m\u00e9todos puede ser incluido en linea 1 para que la clase pueda compilar correctamente", "related_lectures": []}, {"_class": "assessment", "id": 1656804, "assessment_type": "multiple-choice", "prompt": {"question": "<p>Queremos crear una clase Test que herede Clase1 e implemente las interfaces I1 e I2, \u00bfc\u00f3mo definir\u00edamos dicha clase?</p>", "answers": ["<p>class Test implements Clase1 extends I1, I2</p>", "<p>class Test extends Clase1, I1, I2</p>", "<p>class Test extends Clase1 implements I1, I2\n\n</p>", "<p>class Test implements Clase1, I1, I2</p>"], "feedbacks": ["Para heredar una clase se utiliza extends, no implements", "No es posible heredar dos clases", "Primero se hereda la clase y luego se implementan las interfaces", "Mismo problema que la primera respuesta"], "relatedLectureIds": ""}, "correct_response": ["c"], "section": "", "question_plain": "Queremos crear una clase Test que herede Clase1 e implemente las interfaces I1 e I2, \u00bfc\u00f3mo definir\u00edamos dicha clase?", "related_lectures": []}, {"_class": "assessment", "id": 1656806, "assessment_type": "multiple-choice", "prompt": {"relatedLectureIds": "", "feedbacks": ["Un objeto ClaseTres es un ClaseUno, por tanto, se puede almacenar en una variable de este tipo", "Un objeto de una clase no puede almacenarse en una variable de la subclase", "Sint\u00e1cticamente es incorrecta la instrucci\u00f3n, faltar\u00eda operador new", "Mismo problema que la segunda respuesta"], "question": "<p>Si ClaseUno es una superclase de ClaseDos y esta a su vez es superclase de ClaseTres, indica cual de las siguientes instrucciones es correcta suponiendo que ninguna de las clases es abstracta</p>", "answers": ["<p>ClaseUno cu = new ClaseTres();</p>", "<p>ClaseTres ct = new ClaseDos();</p>", "<p>ClaseDos cd = ClaseTres;</p>", "<p>ClaseDos cd = new ClaseUno();</p>"]}, "correct_response": ["a"], "section": "", "question_plain": "Si ClaseUno es una superclase de ClaseDos y esta a su vez es superclase de ClaseTres, indica cual de las siguientes instrucciones es correcta suponiendo que ninguna de las clases es abstracta", "related_lectures": []}, {"_class": "assessment", "id": 1656810, "assessment_type": "multiple-choice", "prompt": {"relatedLectureIds": "", "answers": ["<p>suma=suma+s;</p>", "<p>suma=suma+=s.valueOf();</p>", "<p>s+=suma;</p>", "<p>suma+=Integer.parseInt(s);\n\n</p>"], "question": "<p>El siguiente bloque de c\u00f3digo pretende sumar todos los n\u00fameros contenidos en un fichero, en el que cada n\u00famero ocupa una l\u00ednea:\n\n  </p>\n\n<p>try(BufferedReader bf=new BufferedReader(new FileReader(\"c:\\\\numeros.txt\"))){\n\n  </p>\n\n<p>\u00a0\u00a0\u00a0 int suma=0;\n\n  </p>\n\n<p>\u00a0\u00a0\u00a0 String s;\n\n  </p>\n\n<p>\u00a0\u00a0\u00a0 while((s=bf.readLine())!=null){\n\n  </p>\n\n<p>\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 //linea A\n\n  </p>\n\n<p>\u00a0\u00a0\u00a0\u00a0 }\n\n  </p>\n\n<p>\u00a0\u00a0\u00a0\u00a0 System.out.println(\"La suma es: \"+suma);\n\n  </p>\n\n<p>}\n\n  </p>\n\n<p>catch(IOException e){}\n\n  Indica cual es la instrucci\u00f3n que falta en l\u00ednea A</p>", "feedbacks": ["En necesario convertir la l\u00ednea de texto a n\u00famero antes de sumar", "El m\u00e9todo valueOf es incorrecto", "Lo que har\u00eda esta instrucci\u00f3n es concatenar la suma parcial con el n\u00famero le\u00eddo", "Para sumarlo todo, hay que acumular las lineas le\u00eddas en la variable suma, previa conversi\u00f3n de la l\u00ednea de texto a entero"]}, "correct_response": ["d"], "section": "", "question_plain": "El siguiente bloque de c\u00f3digo pretende sumar todos los n\u00fameros contenidos en un fichero, en el que cada n\u00famero ocupa una l\u00ednea:\n\n  \n\ntry(BufferedReader bf=new BufferedReader(new FileReader(\"c:\\\\numeros.txt\"))){\n\n  \n\n\u00a0\u00a0\u00a0 int suma=0;\n\n  \n\n\u00a0\u00a0\u00a0 String s;\n\n  \n\n\u00a0\u00a0\u00a0 while((s=bf.readLine())!=null){\n\n  \n\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 //linea A\n\n  \n\n\u00a0\u00a0\u00a0\u00a0 }\n\n  \n\n\u00a0\u00a0\u00a0\u00a0 System.out.println(\"La suma es: \"+suma);\n\n  \n\n}\n\n  \n\ncatch(IOException e){}\n\n  Indica cual es la instrucci\u00f3n que falta en l\u00ednea A", "related_lectures": []}, {"_class": "assessment", "id": 1656818, "assessment_type": "multiple-choice", "prompt": {"answers": ["<p>void metodo(){}</p>", "<p>public static int metodo(int i){return 3;}\n\n</p>", "<p>public abstract void metodo(){}</p><br>", "<p>default int metodo();</p>"], "relatedLectureIds": "", "feedbacks": ["Los m\u00e9todos con cuerpo deben definirse como default", "Las interfaces Java 8 pueden contener m\u00e9todos est\u00e1ticos p\u00fablicos", "Si un m\u00e9todo es abstracto no puede tener cuerpo", "Si fuera default, deber\u00eda tener cuerpo"], "question": "<p>Indica cual de los siguientes m\u00e9todos puede ser incluido dentro de una interfaz Java 8</p>"}, "correct_response": ["b"], "section": "", "question_plain": "Indica cual de los siguientes m\u00e9todos puede ser incluido dentro de una interfaz Java 8", "related_lectures": []}, {"_class": "assessment", "id": 1656820, "assessment_type": "multiple-choice", "prompt": {"question": "<p>\u00bfCual de las siguientes interfaces es funcional?</p>", "feedbacks": ["No tiene ning\u00fan m\u00e9todo abstracto, luego no es funcional", "Tiene un \u00fanico m\u00e9todo abstracto, condici\u00f3n \u00fanica para ser funcional", "Mismo problema que la primera respuesta", "Tiene dos m\u00e9todos abstractos, solo puede tener uno para ser funcional"], "relatedLectureIds": "", "answers": ["<p>interface I1{ static void m(){}}</p>", "<p>interface I2{abstract int arg();default void mt(){}}</p>", "<p>interface I3{}</p>", "<p>interface I4{String data();void test();}</p>"]}, "correct_response": ["b"], "section": "", "question_plain": "\u00bfCual de las siguientes interfaces es funcional?", "related_lectures": []}, {"_class": "assessment", "id": 1659166, "assessment_type": "multiple-choice", "prompt": {"feedbacks": ["Faltan las llaves para englobar la implementaci\u00f3n", "El m\u00e9todo no recibe par\u00e1metros", "correcta implementaci\u00f3n del m\u00e9todo a trav\u00e9s de la expresi\u00f3n lambda", "Faltan los par\u00e9ntesis a la izquierda de la flecha", "Falta la instrucci\u00f3n return del resultado"], "question": "<p>Dada la siguiente interfaz:\n\n  </p>\n\n<p>interface Comp{\n\n  </p>\n\n<p>\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 int test();\n\n  </p>\n\n<p>}\n\n  </p>\n\n<p>Indica cual de las siguientes implementaci\u00f3n de esta interfaz es correcta:\n\n  </p>", "relatedLectureIds": "", "answers": ["<p>Comp cp=()-&gt;return 5*5;</p>", "<p>Comp cp=(int d)-&gt;d;</p>", "<p>Comp cp= ()-&gt;6-2;</p>", "<p>Comp cp=-&gt;{return 8;};</p>", "<p>Comp = test()-&gt;{7*2};</p>"]}, "correct_response": ["c"], "section": "", "question_plain": "Dada la siguiente interfaz:\n\n  \n\ninterface Comp{\n\n  \n\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 int test();\n\n  \n\n}\n\n  \n\nIndica cual de las siguientes implementaci\u00f3n de esta interfaz es correcta:", "related_lectures": []}, {"_class": "assessment", "id": 1659178, "assessment_type": "multiple-choice", "prompt": {"feedbacks": ["Si se imprime un resultado", "Este resultado no cumple la condici\u00f3n del filtro", "El primer nombre no cumple la condici\u00f3n del filtro", "Son los dos objetos persona que cumplen la condici\u00f3n del filtro", "Es sint\u00e1cticamente correcto", "No se produce ninguna excepci\u00f3n"], "relatedLectureIds": "", "answers": ["<p>No habr\u00e1 ning\u00fan tipo de error, pero no imprimir\u00e1 nada</p>", "<p>Juan\n\n  </p>", "<p>Juan Ana Bea</p>", "<p>Ana Bea</p>", "<p>Error de compilaci\u00f3n</p>", "<p>Excepci\u00f3n\n\n  </p>"], "question": "<p>Indica que se imprimir\u00e1 al ejecutar el siguiente c\u00f3digo:\n\n  </p>\n\n<p>Stream&lt;Persona&gt; st=Stream.of(new Persona(\"Juan\",30,\"jj@gmail.com\"),\n\n  </p>\n\n<p>\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 new Persona(\"Ana\",40,\"anaj@gmail.com\"),\n\n  </p>\n\n<p>\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 new Persona(\"Bea\",35,\"bae@gmail.com\"));\n\n  st.filter(p-&gt;p.getEdad()&gt;30).forEach(n-&gt;System.out.print(n.getNombre()+\" \"));</p>"}, "correct_response": ["d"], "section": "", "question_plain": "Indica que se imprimir\u00e1 al ejecutar el siguiente c\u00f3digo:\n\n  \n\nStream&lt;Persona&gt; st=Stream.of(new Persona(\"Juan\",30,\"jj@gmail.com\"),\n\n  \n\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 new Persona(\"Ana\",40,\"anaj@gmail.com\"),\n\n  \n\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 new Persona(\"Bea\",35,\"bae@gmail.com\"));\n\n  st.filter(p-&gt;p.getEdad()&gt;30).forEach(n-&gt;System.out.print(n.getNombre()+\" \"));", "related_lectures": []}]};
+      var correct = 0;
+      var total = 0;
+      const questionData = quizData.questions
+      const passPercent = quizData.pass_percent
+
+      function main() {
+        total = questionData.length;
+
+        var questions = [];
+        for (var i = 0; i < questionData.length; i++) {
+          var question = questionData[i];
+          var questionText = question.prompt.question;
+          var answers = question.prompt.answers;
+          var correctAnswer = question.correct_response[0];
+          var correctAnswerText = answers[correctAnswer.charCodeAt(0) - 97];
+          var questionObj = {
+            question: questionText,
+            correctAnswer: correctAnswerText,
+            answers: answers,
+            id: question.id,
+          };
+          questions.push(questionObj);
+        }
+
+        updateScore();
+
+        // display the questions
+        var questionsContainer = document.getElementById("quiz-container");
+        for (var i = 0; i < questions.length; i++) {
+          var question = questions[i];
+          var questionElement = document.createElement("form");
+          questionElement.className = "question";
+          questionElement.innerHTML =
+            "<span>Question " +
+            (i + 1) +
+            ":</span>" +
+            '<div class="question-prompt">' +
+            question.question +
+            "</div>";
+          questionElement.id = question.id;
+          questionElement.classList.add("quiz-container");
+          var answersElement = document.createElement("ul");
+          answersElement.className = "answers";
+          for (var j = 0; j < question.answers.length; j++) {
+            var answer = question.answers[j];
+            var answerElement = document.createElement("li");
+            answerElement.className = "answer";
+            answerElement.innerHTML =
+              '<label for="input-' +
+              question.id +
+              "-" +
+              j +
+              '"><div onclick="select(' +
+              question.id +
+              ", " +
+              j +
+              ')"><span></span><input id="input-' +
+              question.id +
+              "-" +
+              j +
+              '" type="radio" name="question' +
+              i +
+              '" value="' +
+              j +
+              '">' +
+              answer +
+              "</input></div></label>";
+            answerElement.classList.add("question-answer");
+            answersElement.appendChild(answerElement);
+          }
+
+          questionElement.appendChild(answersElement);
+
+          // add a submit button
+          var submitButton = document.createElement("button");
+          submitButton.className = "submit";
+          submitButton.innerHTML = "Submit";
+          submitButton.classList.add("submit-button");
+
+          submitButton.addEventListener("click", function (e) {
+            e.preventDefault();
+            var questionElement = e.target.parentElement;
+            var questionId = questionElement.id;
+            var question = questions.filter(function (q) {
+              return q.id == questionId;
+            })[0];
+
+            // set the border color of all answers to black
+            var answers = questionElement.getElementsByClassName("answer");
+            for (var i = 0; i < answers.length; i++) {
+              console.log(answers[i]);
+              answers[i].children[0].style.borderColor = "#1c1d1f";
+            }
+
+            var answer = questionElement.querySelector(
+              'input[type="radio"]:checked'
+            );
+            if (answer) {
+              var answerIndex = answer.value;
+              var answerText = question.answers[answerIndex];
+              if (answerText == question.correctAnswer) {
+                answer.parentElement.parentElement.style.borderColor =
+                  "limegreen";
+                // alert("Correct!");
+                correct++;
+                updateScore();
+              } else {
+                answer.parentElement.parentElement.style.borderColor = "red";
+                // alert("Incorrect!");
+              }
+            } else {
+              alert("Please select an answer.");
+            }
+          });
+
+          // add button
+          questionElement.appendChild(submitButton);
+
+          questionsContainer.appendChild(questionElement);
+        }
+      }
+
+      function select(question, answer) {
+        var questionElement = document.getElementById(question);
+        var answers = questionElement.getElementsByClassName("answer");
+        for (var i = 0; i < answers.length; i++) {
+          var span = answers[i].children[0].children[0].children[0];
+          var input = answers[i].children[0].children[0].children[1];
+          span.classList.remove("selected");
+          input.checked = false;
+        }
+        var span = answers[answer].children[0].children[0].children[0];
+        var input = answers[answer].children[0].children[0].children[1];
+        span.classList.add("selected");
+        input.checked = true;
+      }
+
+      function updateScore() {
+        var scoreElem = document.getElementById("score");
+        const score = (correct / total) * 100;
+        scoreElem.innerHTML = "Score: " + score + "/" + passPercent + "%";
+      }
+    </script>
+  </body>
+</html>

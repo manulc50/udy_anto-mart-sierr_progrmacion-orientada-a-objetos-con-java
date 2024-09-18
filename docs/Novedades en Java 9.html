@@ -1,0 +1,90 @@
+<h4>Novedades en Java 9</h4><p>En este documento vamos a describir algunas de las principales novedades que ha aparecido en la versin Java 9, en lo que a lenguaje y APIs de uso general se refiere.  </p><h4>Mtodos estticos de factora en List, Set y Map</h4><p>Se trata de una serie de mtodos estticos <em>of() </em>incluidos en estas interfaces, con los que podemos crear una coleccin inmutable de elementos a partir de un conjunto discreto de datos.  </p><p>Por ejemplo, podemos crear un List con los das de la semana de esta manera: </p><p>List&lt;String&gt; nombres=List.<em>of</em>("lunes","martes","miercoles"); </p><p>Y mostrarlos despus: </p><pre class="prettyprint linenums">for(String n:nombres) {   
+ System.out.println(n);   
+}
+</pre><p> </p><p>Al ser una coleccin inmutable, lo que no podemos es, aadir nuevos elementos o eliminar los ya existentes: </p><p><code>nombres.add("jueves"); //excepcin UnsupportedOperationException </code></p><p>En el caso de Map, tenemos el mtodo esttico: </p><p><code>ofEntries(Entry ... entries)</code> </p><p>Que a partir de un nmero variable de objetos Entry crea un mapa inmutable de los mismos. Precisamente, el mtodo esttico <em>entry()</em> de la interfaz Map, tambin incorporado como novedad en Java 9, permite crear objetos Entry. </p><p>El siguiente cdigo crear una mapa de tres nombres con una clave numrica entera asociada: </p><pre class="prettyprint linenums">Map&lt;Integer,String&gt; datos=Map.ofEntries(Map.entry(123, "Luis"),
+  
+Map.entry(300, "Ana"),
+
+Map.entry(500, "Maria"));</pre><p> </p><p>Para mostrar el contenido completo de la coleccin podemos utilizar el mtodo forEach(), incluido en Map desde la versin Java 8: </p><p><code>datos.forEach((k,v)-&gt;System.out.println("clave: "+" valor:"+v)); </code></p><p>La interfaz Set, como List, dispone de un mtodo esttico <em>of(E..e)</em> que admite un nmero variable de argumentos para formar un conjunto inmutable. </p><p><code>Set&lt;Integer&gt; nums=Set.of(30,6,4,100); </code></p><h4>Mtodos privados en interfaces</h4><p>Desde Java 8 las interfaces pueden incluir mtodos <em>default</em> y mtodos <em>static</em>, pero en ambos casos solo podan tratarse de miembros pblicos. Desde Java 9 tambin se pueden incluir mtodos privados. Estos mtodos son para uso exclusivo de la interfaz, es decir, solo pueden ser llamados desde mtodos <em>default</em> definidos en la propia interfaz:  </p><pre class="prettyprint linenums">interface Inter1{
+ 
+ //mtodos privados
+ 
+  private int mayor(int a, int b){
+  
+ return a&gt;b?a:b;
+  
+ }
+  
+ private int menor(int a, int b){
+  
+ return a&lt;b?a:b;
+  
+ }
+
+  
+ //los mtodos privados son llamados desde  
+ //el mtodo default
+ default int suma(int a, int b){
+ int s=0;  
+ for(int i=menor(a,b);i&lt;mayor(a,b);i++){  
+ s+=i;  
+ }
+ return s; 
+ } 
+}
+
+  
+public class Test { 
+
+ public static void main(String[] args) {  
+ //implementacin de la interfaz a travs de  
+ //una clases annima que no incorpora nada  
+ Inter1 cp=new Inter1(){};  
+ System.out.println("suma "+cp.suma(10, 5));  
+ }   
+}</pre><p> </p><p>Los mtodos privados tambin pueden ser estticos a fin de que puedan ser utilizados desde otros mtodos estticos de la interfaz. </p><h4>Utilizacin de constantes efectivas en try con recursos</h4><p>Antes de Java 9, si queramos utilizar try con recursos, el objeto que representa el recurso a cerrar deba crearse dentro de los parntesis del try:
+
+ </p><pre class="prettyprint linenums">try(PrintStream ps=new PrintStream(..)){
+ 
+:
+ 
+}
+</pre><p><br></p><p>Con Java 9 es posible utilizar objetos cerrables dentro de los parntesis del try, que hayan sido creados antes de este: </p><pre class="prettyprint linenums">PrintStream ps=new PrintStream(..);   
+try(ps){   
+:   
+}
+</pre><p><br></p><p>La variable ps debe ser una constante efectiva, es decir, no puede ser modificada, si eso ocurre entonces no se podr utilizar en el try con recursos, se producir un error de compilacin:  </p><pre class="prettyprint linenums">PrintStream ps=new PrintStream(..);
+  
+ps=new PrintStream(..);
+ 
+try(ps){ //error de compilacin
+  
+:
+  
+}</pre><p><br></p><h4>Herramienta Jshell</h4><p>Java 9 incorpora la herramienta jshell, que es una aplicacin basada en lnea de comandos, a travs de la que podemos probar de forma muy cmoda bloques de cdigo Java, como mtodos o expresiones, evitando tener que crear una clase con su mtodo main para realizar estas tareas. </p><p>Para entrar en jshell simplemente tecleamos jshell en la lnea de comandos. A partir de ah, nos aparece una consola en la que podemos teclear cualquier cdigo Java que devuelva o produzca un resultado :  </p><figure><img src="https://img-c.udemycdn.com/redactor/raw/2017-10-14_15-34-25-2316d1b225da80c90d0546b317f74cd8.png"></figure><h4>Nuevos mtodos en streams</h4><p>La interfaz Stream, una de las grandes novedades que de Java 8, incorpora nuevos mtodos en Java 9. Veamos algunos de los ms interesantes: </p><ul><li><p>Stream&lt;T&gt; takeWhile(Predicate&lt;T&gt; p) . Para un Stream ordenado, retorna un nuevo Stream en el que se van incluyendo los elementos que cumplen con el predicado, hasta encontrar uno que no lo cumpla. </p></li></ul><p>Por ejemplo, la siguiente expresin retornara un Stream formado por los elementos 45 y 129: </p><pre class="prettyprint linenums">Stream&lt;Integer&gt; st=Stream.of(300,45,129,260);   
+st.sorted().takeWhile(n-&gt;n&lt;200);   </pre><p>En cambio, en este caso se retornara un Stream vaco, puesto que ya el primer elemento no cumple con el predicado:</p><pre class="prettyprint linenums">Stream&lt;Integer&gt; st=Stream.of(300,45,129,260);
+st.sorted().takeWhile(n-&gt;n&gt;200);</pre><p> </p><p>Si el Stream no est ordenado, el resultado es impredecible. </p><ul><li><p>Stream&lt;T&gt; dropWhile(Predicate&lt;T&gt; p). Funciona de forma contrara a takeWhile(), va eliminando aquellos elementos que cumplen con el predicado, hasta encontrar uno que no lo cumple.</p></li></ul><p>En el siguiente ejemplo obtendramos un Stream con los nmeros 260 y 300: </p><pre class="prettyprint linenums">Stream&lt;Integer&gt; st=Stream.of(300,45,129,260);
+st.sorted().dropWhile(n-&gt;n&lt;200) </pre><p>En este otro ejemplo, el nuevo Stream contendra todos los nmeros pues, al no cumplir el primero con el predicado, no descarta ningn elemento: </p><pre class="prettyprint linenums">Stream&lt;Integer&gt; st=Stream.of(300,45,129,260);   
+st.sorted().dropWhile(n-&gt;n&gt;200)</pre><p>
+ </p><h4>Modularidad</h4><p>Una de las principales caractersticas novedosas que aade Java 9 es la modularidad, que consiste en organizar los paquetes de clases en mdulos.  </p><p>Podramos decir que un mdulo es un nivel de divisin superior al de paquete, de modo que si una clase depende de otras, no necesitemos incorporar una dependencia a un jar con cientos de clases que no vamos a necesitar, bastar con referenciar el mdulo que contiene el paquete o paquetes de clases que necesitamos. </p><p>Las propias libreras del JDK estn organizadas en mdulos, de forma que las aplicaciones solo tengan que utilizar los mdulos de las clases que necesitan, en lugar de requerir ese gran archivo jar en el que se incluan todas las miles de clases del Java SE en versiones anteriores a Java 9. Esto facilitar la creacin de aplicaciones Java para dispositivos de pequeo tamao.
+
+ </p><figure><img src="https://img-c.udemycdn.com/redactor/raw/2017-10-14_15-38-23-c72c36ef5575251b376e6e32cc804d8d.png"></figure><h4>Definicin de un mdulo</h4><p>Un mdulo est formado por una serie de paquetes de clases, adems de un descriptor de mdulo en el que se indican, por un lado, los mdulos de los que depende el mdulo que estamos definiendo y, por otro, los paquetes que queremos exponer a otro mdulos. </p><p>Para crear un mdulo, crearemos un proyecto Java estndar con sus paquetes y clases que lo van a formar. Por ejemplo, podramos un proyecto llamado <em>Modularidad</em> con una clase <em>Operaciones</em>, dentro de un paquete com.prueba, en la que incluiremos un mtodo <em>factorial()</em> que nos permitir calcular el factorial de un nmero: </p><pre class="prettyprint linenums">package com.prueba;     
+public class Operaciones {   
+ public int factorial(int n) {   
+ int r=1;   
+ for(int i=1;i&lt;=n;i++) {   
+ r*=i;   
+ }   
+ return r;   
+ }   
+}   </pre><p> </p><p>En el <em>default package</em>, incluiremos el descriptor de paquete modulo-info.java. Para incluir este archivo, si estamos en eclipse elegiremos la opcin Configure-&gt;Create module-info.java en el men que aparece al pulsar el botn derecho del ratn sobre el proyecto. Este archivo contiene la definicin del mdulo, que lo llamaremos por ejemplo com.testModule: </p><pre class="prettyprint linenums">module com.testModule{   
+   
+}</pre><p>
+</p><p>Dentro del mdulo debemos indicar la lista de paquetes de clases que queremos que sean accesibles desde fuera de este mdulo. Esto se hace utilizando la palabra <strong><em>exports</em></strong>, seguida del nombre del paquete que queremos exportar. En nuestro caso, la definicin del mdulo quedara: </p><pre class="prettyprint linenums">module com.testModule{   
+ exports com.prueba;   
+}   </pre><p>Con esto ya quedara definido el mdulo, como ves, no es muy diferente a crear un proyecto normal, lo nico la existencia del archivo module-info.java con la descripcin del mdulo. </p><p>Para poder utilizar este mdulo en otro mdulo Java, dentro del archivo de definicin del mdulo cliente debemos incluir la instruccin <strong><em>requires</em></strong>, seguida del nombre del mdulo que queremos utilizar </p><pre class="prettyprint linenums">module com.prueba.client { 
+   requires com.testModule;
+
+  }   </pre><p>Esto permitir utilizar en el nuevo proyecto el paquete de clases com.prueba del primer proyecto. Lo nico que faltara es aadir una referencia al proyecto origen en el proyecto destino a travs de las propiedades del proyecto-&gt;Build Path pestaa <em>projects</em>:  </p><figure><img src="https://img-c.udemycdn.com/redactor/raw/2017-10-14_15-38-53-b68bec6f8f951201ac622e1d51999f34.png"></figure><p>  </p><p><br></p><p>
+
+ </p>

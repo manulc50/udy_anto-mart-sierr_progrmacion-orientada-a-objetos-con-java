@@ -1,0 +1,387 @@
+<h4>Acceso a ficheros</h4>
+
+<p>Es habitual que en algunas ocasiones, una aplicacin Java tenga que acceder a un fichero para leer informacin almacenada por algn tipo de dispositivo o programa, o incluso para guardar datos de la aplicacin que posteriormente tengan que ser utilizadas por la misma.
+
+  </p>
+
+<p>El acceso a ficheros en Java se reduce a una operacin de entrada y salida de datos, de hecho, se utilizan las mismas clases del java.io que se emplean para trasferir datos entre la aplicacin y el exterior. Seguidamente, veremos cmo emplear estas clases de entrada y salida Java para poder intercambiar informacin con ficheros de texto
+
+  </p>
+
+<h4>Escritura en un fichero</h4>
+
+<p>En la leccin anterior vimos como la clase PrintStream es la clase principal del java.io para operaciones de salida en un programa Java, esta clase tambin nos servir para poder escribir en un fichero
+
+  </p>
+
+<h4>Utilizacin de PrintStream</h4>
+
+<p>Si lo que queremos es escribir informacin en un fichero, podemos utilizar tambin esta clase a partir de su constructor:
+
+  </p>
+
+<p>&nbsp;PrintStream(String fileName)
+
+  </p>
+
+<p>Como vemos, solamente tendremos que proporcionar la direccin del fichero&nbsp; sobre el que queremos escribir. Si el fichero est en el mismo directorio de la aplicacin, solamente tendremos que proporcionar el nombre del mismo, sino, habr que indicar la ruta completa.
+
+  </p>
+
+<p>Si el fichero no existe al crear el objeto PrintStream, <strong>se crear automticamente</strong>, pero si la ruta de directorios indicada no existiera, entonces se producir una excepcin de tipo FileNotFoundException. Esta excepcin es obligatorio capturarla cuando se crea el objeto, por lo tanto, tendremos que hacer uso de los bloque try catch:
+
+  </p>
+
+<p>try{
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; PrintStream ps=new PrintStream("c:\\temporal\\datos.txt");
+
+  </p>
+
+<p>&nbsp;
+
+  </p>
+
+<p>}
+
+  </p>
+
+<p>catch(FileNotFoundException ex){
+
+  </p>
+
+<p>:
+
+  </p>
+
+<p>}
+
+  </p>
+
+<p>Observa la utilizacin de la doble barra (\\) para el separador de carpetas, y es que la barra simple (\) se utiliza en Java para representar secuencias de escape, como \n para el salto de lnea \t para el tabulador, \" para las comillas o \\ para la propia barra.
+
+  </p>
+
+<p>Una vez creado el objeto PrintStream, se pueden recurrir a los clsicos mtodos <em>print()</em> y <em>println()</em> para la escritura de los datos.
+
+  </p>
+
+<p>Importante destacar tambin que el PrintStream debe ser cerrado despus de haber sido utilizado a fin de optimizar los recursos del equipo. Dado que el cierre del fichero es algo de obligada realizacin, lo incluiremos dentro de un bloque finally. 
+
+  </p>
+
+<p>El siguiente bloque de instrucciones almacena dos cadenas en el fichero, una en cada lnea, y asegura el cierre del fichero:
+
+  </p>
+
+<p>PrintStream ps=null;
+
+  </p>
+
+<p>try{
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; ps=new PrintStream("c:\\temporal\\datos.txt");
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; ps.println("cadena 1");
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; ps.println("cadena 2);
+
+  </p>
+
+<p>}
+
+  </p>
+
+<p>catch(FileNotFoundException ex){
+
+  </p>
+
+<p>:
+
+  </p>
+
+<p>}
+
+  </p>
+
+<p>finally{
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; //antes de cerrar, comprobamos que ha sido abierto
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; if(ps!=null){
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>ps.close();</strong>
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; }
+
+  </p>
+
+<p>}
+
+  </p>
+
+<p>Desde la versin Java 7 es posible utilizar el try con recursos para el cierre automtico de objetos. Al indicar la instruccin de creacin del objeto en la apertura del bloque try, Java proceder al cierre de dicho objeto al finalizar o bloque o tras capturarse la excepcin, por lo que <strong>no necesitaremos utilizar el bloque finally </strong>para llamar explcitamente a <em>close()</em>. As quedara el programa anterior con un try catch con recursos:
+
+  </p>
+
+<p>&nbsp;
+
+  </p>
+
+<p>try(PrintStream ps = ps=new PrintStream("c:\\temporal\\datos.txt");)
+
+  </p>
+
+<p>{
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; ps.println("cadena 1");
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; ps.println("cadena 2);
+
+  </p>
+
+<p>}
+
+  </p>
+
+<p>catch(FileNotFoundException ex){
+
+  </p>
+
+<p>:
+
+  </p>
+
+<p>}
+
+  </p>
+
+<p>&nbsp;
+
+  </p>
+
+<p>Date cuenta la declaracin de la variable y la creacin del objeto estn en una misma instruccin, y esta debe indicarse entre los parntesis del try.
+
+  </p>
+
+<p>El try con recursos puede emplearse con cualquier objeto que implemente la interfaz AutoCloseable
+
+  </p>
+
+<h4>Escritura en modo append</h4>
+
+<p>La utilizacin de PrintStream para escribir en un fichero, tal y como la hemos presentado, opera en modo sobrescritura, lo que significa que cada vez que creamos el objeto PrintStream para escribir algo, el contenido anterior se borra. Si ejecutamos el cdigo anterior varias veces, siempre veremos lo mismo en el fichero.
+
+  </p>
+
+<p>Si lo que queremos es aadir datos al fichero, manteniendo el contenido existente, entonces habr que crear el objeto PrintStream en modo append, lo que podemos hacer utilizando el constructor ms genrico:
+
+  </p>
+
+<p>PrintStream(OutputStream salida).
+
+  </p>
+
+<p>Con este constructor, en lugar de pasar la ruta del fichero tendremos que crear antes un objeto OutputStream que pueda ser configurado para aadir contenido al fichero. Una clase que cumple estas caractersticas es FileOutputStream, que dispone del siguiente constructor:
+
+  </p>
+
+<p>FileOutputStream(String name, boolean append)
+
+  </p>
+
+<p>En este podemos ver que, adems de la ruta del fichero que se le proporciona como primer parmetro, podemos indicarle en el segundo parmetro el modo de escritura: true(modo append) o false(modo sobrescritura).
+
+  </p>
+
+<p>As pues, si queremos volver a escribir el programa anterior para que almacene la informacin en el fichero, manteniendo su contenido anterior, sera:
+
+  </p>
+
+<p>try(FileOutputStream fos=new FileOutputStream("c:\\temporal\\datos.txt", true);
+
+  </p>
+
+<p>PrintStream ps=new PrintStream(fos);)
+
+  </p>
+
+<p>{
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; ps.println("cadena 1");
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; ps.println("cadena 2);
+
+  </p>
+
+<p>}
+
+  </p>
+
+<p>catch(FileNotFoundException ex){
+
+  </p>
+
+<p>:
+
+  </p>
+
+<p>}
+
+  </p>
+
+<p>En este caso, como los dos objetos (FileOutputStream y PrintStream) son autocerrables, ambos se crean entre los parntesis del try con recursos. El cierre de estos objetos se realizar en orden inverso a su creacin (primero PrintStream y despus FileOutputStream)
+
+  </p>
+
+<h4>Lectura de un fichero</h4>
+
+<p>Al igual que sucede con las operaciones de escritura, la lectura de un fichero es una operacin de entrada y salida que puede realizarse con las clases presentadas en la leccin anterior. En el caso concreto de la lectura de un fichero, estamos hablando de una operacin de entrada que podemos llevar a cabo con el objeto BufferedReader
+
+  </p>
+
+<h4>Utilizacin de BufferedReader para leer de un fichero</h4>
+
+<p>Para leer de un fichero a travs de BufferedReader, tendremos que proporcionar al constructor BufferedReader(Reader rd) un objeto Reader que apunte al fichero del que queremos leer. La clase FileReader nos proporciona la clave, pues dispone del siguiente constructor para crear un objeto que apunte a un fichero a partir de la ruta del mismo:
+
+  </p>
+
+<p>FileReader(String fichero)
+
+  </p>
+
+<p>El siguiente bloque de instrucciones recupera el contenido completo del fichero datos.txt y lo muestra por pantalla:
+
+  </p>
+
+<p>try(FileReader fr=new FileReader("c:\\temporal\\datos.txt");
+
+  </p>
+
+<p>BufferedReader bf=new BufferedReader(fr);
+
+  </p>
+
+<p>){
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; String s;
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; //lee mientras haya lneas que leer
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; while( (s=bf.readLine())!=null){
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; System.out.println(s);
+
+  </p>
+
+<p>&nbsp;&nbsp;&nbsp; }
+
+  </p>
+
+<p>}
+
+  </p>
+
+<p>catch(FileNotFoundException ex){
+
+  </p>
+
+<p>:
+
+  </p>
+
+<p>}
+
+  </p>
+
+<p>catch(IOException ex){
+
+  </p>
+
+<p>:
+
+  </p>
+
+<p>}
+
+  </p>
+
+<p>Podemos ver cmo tanto FileReader como BufferedReader son autocerrables, ya que los creamos entre los parntesis del try, lo que significa que sern cerrados implcitamente por la JVM cuando no se necesiten.
+
+  </p>
+
+<p>Tambin debemos detenernos en la instruccin while( (s=bf.readLine())!=null). La primera vez que llamamos a <em>readLine()</em> devuelve la primera fila del fichero y el BufferedReader se queda apuntando a la segunda fila, por lo que la siguiente llamada devolver esta segunda fila, y as sucesivamente. Despus de leer la ltima lnea, BufferedReader se situar fuera del fichero y la siguiente llamada a <em>readLine()</em> devolver null, de ah que la condicin para entrar en el bucle sea s!=null.
+
+  </p>
+
+<p>&nbsp;
+
+  </p>
+
+<p>&nbsp;
+
+  </p>
+
+<p>&nbsp;
+
+  </p>
+
+<p>&nbsp;
+
+  </p>
+
+<p>&nbsp;
+
+  </p>
+
+<p>&nbsp;
+
+  </p>
+
+<p>&nbsp;
+
+  </p>
+
+<p>&nbsp;
+
+  </p>
+
+<p>&nbsp;
+
+  </p>
+
+<p>&nbsp;
+
+  </p>

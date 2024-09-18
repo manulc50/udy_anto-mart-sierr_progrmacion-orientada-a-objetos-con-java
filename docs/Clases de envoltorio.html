@@ -1,0 +1,185 @@
+<h4>Clases de envoltorio</h4>
+
+<p>La clases de envoltorio representan a los diferentes tipos primitivos del lenguaje Java. Estas clases se encuentran en el paquete java.lang y son las siguientes:
+
+  </p>
+
+<ul><li>Byte
+
+  </li><li>Short
+
+  </li><li>Integer
+
+  </li><li>Long
+
+  </li><li>Float
+
+  </li><li>Double
+
+  </li><li>Character
+
+  </li><li>Boolean
+
+  </li></ul>
+
+<h4>Utilidad de las clases de envoltorio</h4>
+
+<p>Y, para qu necesitamos estas clases si ya disponemos de los tipos primitivos?. Las clases de envoltorio las utilizaremos con dos finalidades diferentes:
+
+  </p>
+
+<ul><li>Encapsular un dato primitivo en un objeto. Determinadas operaciones con datos en un programa Java solo podrn realizarse con objetos, por tanto, si queremos llevar a cabo este tipo de operaciones sobre un nmero, tendremos que encapsular dicho nmero en un objeto. Como veremos en la siguiente leccin, este es el caso de las colecciones. Una coleccin es una agrupacin de objetos, por lo que si queremos disponer de una coleccin de nmeros, tendremos que "envolver" dichos nmeros en objetos de tipo Integer, Long, etc.
+
+  </li><li>Conversin de texto a tipo primitivo. Las clases de envoltorio disponen de mtodos estticos que permiten convertir cadenas de texto en tipos primitivos
+
+  </li></ul>
+
+<p>&nbsp;
+
+  </p>
+
+<h4>Encapsular tipo primitivo en un objeto</h4>
+
+<p>Todas las clases de envoltorio disponen de un constructor que permite crear un objeto a partir de su tipo primitivo:
+
+  </p>
+
+<p>Integer num=new Integer(300);
+
+  </p>
+
+<p>Double val=new Double(23.9);
+
+  </p>
+
+<p>Character ck=new Character('@');
+
+  </p>
+
+<p>Una vez creado el objeto, podr utilizarse este en aquellos contextos en los que se requiera trabajar con datos de tipo objeto.
+
+  </p>
+
+<p>Si queremos recuperar el valor primitivo del objeto, recurriremos a los mtodos <em>xxxValue()</em> de las diferentes clases de envoltorio, siendo xxx el nombre del tipo. Por ejemplo, en Character&nbsp; tenemos el mtodo <em>charValue()</em>, mientras que en Integer utilizaremos <strong>intValue():</strong>
+
+  </p>
+
+<p>int n=num.intValue();
+
+  </p>
+
+<p>char c=ck.charValue();
+
+  </p>
+
+<p>double d=val.doubleValue();
+
+  </p>
+
+<p>&nbsp;
+
+  </p>
+
+<h4>Autoboxing/unboxing</h4>
+
+<p>Desde la versin Java 5 es posible convertir automticamente un tipo primitivo en un objeto de envoltorio y viceversa. Por ejemplo, si queremos encapsular el valor entero 100 en un objeto Integer podemos hacerlo de la forma:
+
+  </p>
+
+<p>Integer in = 100;
+
+  </p>
+
+<p>A este proceso de conversin automtica de tipo primitivo a objeto se le conoce como <strong>autoboxing</strong>. De la misma forma, podemos recuperar directamente el valor encapsulado en el objeto asignando ste a la variable primitiva:
+
+  </p>
+
+<p>int k =in;
+
+  </p>
+
+<p>Este proceso es conocido como unboxing.
+
+  </p>
+
+<p>Segn lo anterior, sera posible hacer algo como esto:
+
+  </p>
+
+<p>Integer n=10;
+
+  </p>
+
+<p>n++;
+
+  </p>
+
+<p>int p=7;
+
+  </p>
+
+<p>Integer s=p+n; //asignara el valor 18
+
+  </p>
+
+<p>En el cdigo anterior se produce varias veces el proceso de <strong>autoboxing/unboxing</strong>, por ejemplo, durante la operacin n++, se realiza un unboxing para extraer el nmero e incrementarlo, despus, mediante un autoboxing se vuelve a guardar como objeto en la variable n. Tambin en la operacin p+n se realizar un unboxing sobre el objeto n para extraer el nmero y sumarlo con p, finalizando con un autoboxing para almacenarlo en s.
+
+  </p>
+
+<p>Como vemos, se puede trabajar indistintamente con tipos primitivos y tipos objetos, aunque si lo que se quiere hacer son operaciones aritmticas es conveniente trabajar solo con primitivos y evitar as los continuos autoboxing y unboxing que penalizan el rendimiento de la aplicacin.
+
+  </p>
+
+<h4>Conversiones de cadena a tipo primitivo</h4>
+
+<p>Las clases de envoltorio de tipo numrico, disponen de una serie de mtodos estticos para convertir cadenas de caracteres numricas en nmeros. Estos mtodos resultan muy tiles en aplicaciones de lectura de datos del exterior, en donde la mayor parte de la veces estos datos se reciben como texto y, en caso de ser datos numricos, debemos convertirlos a nmeros para operar con ellos.
+
+  </p>
+
+<p>Los mtodos de conversin tienen la forma parseXxx, donde Xxx representa el tipo primitivo al que vamos a convertir. De este modo, en la clase Integer tenemos el mtodo <em>parseInt()</em>, mientras que en Double ser <em>parseDouble()</em>.
+
+  </p>
+
+<p>El siguiente bloque de instrucciones solicita la introduccin de un nmero por teclado y nos muestra el cuadrado del mismo. La lectura se realiza&nbsp; a travs del objeto Scanner utilizando el mtodo <em>nextLine()</em>. Como dicho mtodo devuelve el valor como texto, lo convertimos a int para poder operar con el:
+
+  </p>
+
+<p>Scanner sc=new Scanner(System.in);
+
+  </p>
+
+<p>System.out.println("Introduce nmero");
+
+  </p>
+
+<p>String lectura=sc.nextLine();
+
+  </p>
+
+<p><strong>int n=Integer.parseInt(lectura);</strong>
+
+  </p>
+
+<p>System.out.println("El cuadrado es "+n*n);
+
+  </p>
+
+<p>&nbsp;
+
+  </p>
+
+<p>&nbsp;
+
+  </p>
+
+<p>&nbsp;
+
+  </p>
+
+<p>&nbsp;
+
+  </p>
+
+<p>&nbsp;
+
+  </p>
